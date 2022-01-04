@@ -8,111 +8,82 @@
  * @format
  */
 
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, View, StyleSheet, TextInput} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const TweetComp: React.FC<{}> = () => {
+  const [tweet, setTweet] = useState<string>('Add tweet here');
+  const [inputStyle, setInputStyle] = useState<object>({
+    borderColor: 'blue',
+    borderWidth: 4,
+    padding: 8,
+    height: 100,
+    borderRadius: 10,
+  });
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [textstyle, setTextStyle] = useState<object>({
+    margin: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  });
+
+  useEffect(() => {
+    handleLenChanges();
+  }, [tweet]);
+
+  function handleLenChanges() {
+    let len = tweet.split('').length;
+    if (len >= 240) {
+      setInputStyle({...inputStyle, borderColor: 'red'});
+      setTextStyle({...textstyle, color: 'red'});
+    } else if (len >= 230) {
+      setInputStyle({...inputStyle, borderColor: 'yellow'});
+      setTextStyle({...textstyle, color: 'yellow'});
+    } else {
+      setInputStyle({...inputStyle, borderColor: 'black'});
+      setTextStyle({...textstyle, color: 'black'});
+    }
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
+    <View style={styles.container}>
+      <TextInput
+        style={inputStyle}
+        multiline={true}
+        value={tweet}
+        onChangeText={e => {
+          setTweet(e);
+        }}
+      />
+      <Text style={textstyle}>
+        {240 - tweet.split('').length + ' Chars Remaning'}
       </Text>
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const [tweet, setTweet] = useState('fsdfsdfsdfsdf');
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <Header />
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
-            <Section title="Step One">
-              Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-              screen and then come back to see your edits.
-            </Section>
-            <Section title="See Your Changes">
-              <ReloadInstructions />
-            </Section>
-            <Section title="Debug">
-              <DebugInstructions />
-            </Section>
-            <Section title="Learn More">
-              Read the docs to discover what jkto do next:
-            </Section>
-            <Text>{tweet}"here"</Text>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+const App: React.FC<{}> = () => {
+  return <TweetComp />;
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingTop: 150,
+
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+
+    borderWidth: 2,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
+
+  paragraph: {
+    margin: 24,
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
