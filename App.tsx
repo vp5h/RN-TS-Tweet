@@ -34,12 +34,12 @@ const TweetComp: React.FC<{}> = () => {
 
   function handleLenChanges() {
     let len = tweet.split('').length;
-    if (len >= 240) {
+    if (len >= 280) {
       setInputStyle({...inputStyle, borderColor: 'red'});
       setTextStyle({...textstyle, color: 'red'});
-    } else if (len >= 230) {
-      setInputStyle({...inputStyle, borderColor: 'yellow'});
-      setTextStyle({...textstyle, color: 'yellow'});
+    } else if (len >= 270) {
+      setInputStyle({...inputStyle, borderColor: 'orange'});
+      setTextStyle({...textstyle, color: 'orange'});
     } else {
       setInputStyle({...inputStyle, borderColor: 'black'});
       setTextStyle({...textstyle, color: 'black'});
@@ -57,7 +57,7 @@ const TweetComp: React.FC<{}> = () => {
         }}
       />
       <Text style={textstyle}>
-        {240 - tweet.split('').length + ' Chars Remaning'}
+        {280 - tweet.split('').length + ' Chars Remaning'}
       </Text>
     </View>
   );
